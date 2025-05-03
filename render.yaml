@@ -6,4 +6,4 @@ services:
     startCommand: gunicorn app:app
     envVars:
       - key: ELEVENLABS_API_KEY
-        value: sk_e68b861d8d119bd6bd0cb2451d12df46d8a99c85bfc8d669
+        value: ELEVENLABS_API_KEY
