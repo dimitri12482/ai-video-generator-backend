@@ -5,9 +5,11 @@ import os
 
 app = Flask(__name__)
 
-# 🔐 Secure: Set this in your Render or local environment
-ELEVENLABS_API_KEY = os.environ.get("sk_e68b861d8d119bd6bd0cb2451d12df46d8a99c85bfc8d669")
-VOICE_ID = "21m00Tcm4TlvDq8ikWAM"  # Example voice ID (you should replace this)
+# 🔐 Load ElevenLabs API key from environment variable
+ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
+
+# ✅ Use a known working voice ID (Rachel)
+VOICE_ID = "21m00Tcm4TlvDq8ikWAM"  # You can change this to another one from ElevenLabs
 
 @app.route("/speak", methods=["POST"])
 def speak():
