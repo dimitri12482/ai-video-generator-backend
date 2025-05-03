@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # 🔐 Secure: Set this in your Render or local environment
 ELEVENLABS_API_KEY = os.environ.get("sk_e68b861d8d119bd6bd0cb2451d12df46d8a99c85bfc8d669")
-VOICE_ID = "EXAVITQu4vr4xnSDxMaL"  # Example voice ID (you should replace this)
+VOICE_ID = "b38kUX8pkfYO2kHyqfFy"  # Example voice ID (you should replace this)
 
 @app.route("/")
 def home():
