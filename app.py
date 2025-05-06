@@ -1,4 +1,4 @@
-# app.py — AI Voice Backend with ElevenLabs + Health Check
+# app.py — Flask + ElevenLabs API Integration with Render Compatibility
 from flask import Flask, request, send_file, jsonify
 import requests
 import tempfile
@@ -6,13 +6,13 @@ import os
 
 app = Flask(__name__)
 
-# Load API key and voice ID from environment variables
+# Load API Key and Voice ID from environment
 ELEVENLABS_API_KEY = os.environ.get("ELEVENLABS_API_KEY")
-VOICE_ID = os.environ.get("VOICE_ID", "21m00Tcm4TlvDq8ikWAM")  # Default to Rachel
+VOICE_ID = os.environ.get("VOICE_ID", "21m00Tcm4TlvDq8ikWAM")  # Rachel fallback
 
 @app.route("/", methods=["GET"])
 def health():
-    return "✅ AI Voice backend is running! Use POST /speak to synthesize."
+    return "✅ Flask app is running! Use POST /speak"
 
 @app.route("/speak", methods=["POST"])
 def speak():
@@ -22,7 +22,7 @@ def speak():
     if not text:
         return jsonify({"error": "Text is required"}), 400
 
-    print(f"🔊 Requesting speech for: {text}")
+    print(f"🔊 Speaking: {text}")
 
     headers = {
         "xi-api-key": ELEVENLABS_API_KEY,
@@ -41,10 +41,10 @@ def speak():
 
     try:
         response = requests.post(url, headers=headers, json=payload, stream=True, timeout=20)
-        print("🧪 Status code:", response.status_code)
+        print("Status Code:", response.status_code)
 
         if response.status_code != 200:
-            print("❌ Error text:", response.text)
+            print("❌ Error:", response.text)
             return jsonify({"error": "Failed to generate audio", "details": response.text}), 500
 
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp_file:
@@ -53,11 +53,11 @@ def speak():
                     tmp_file.write(chunk)
             tmp_file_path = tmp_file.name
 
-        print(f"✅ MP3 saved to {tmp_file_path}")
+        print(f"✅ Audio file saved at {tmp_file_path}")
         return send_file(tmp_file_path, mimetype="audio/mpeg")
 
     except requests.exceptions.RequestException as e:
-        print("❌ Exception during API request:", str(e))
+        print("❌ Request failed:", str(e))
         return jsonify({"error": "Request to ElevenLabs failed", "details": str(e)}), 500
 
 if __name__ == "__main__":
