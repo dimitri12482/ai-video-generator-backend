@@ -1,9 +1,12 @@
 services:
   - type: web
-    name: tts-backend
+    name: ai-voice-backend
     env: python
+    plan: free
     buildCommand: ""
     startCommand: gunicorn app:app
     envVars:
       - key: ELEVENLABS_API_KEY
-        value: ELEVENLABS_API_KEY
+        sync: false   # Set this value in Render dashboard for security
+      - key: VOICE_ID
+        value: 21m00Tcm4TlvDq8ikWAM
